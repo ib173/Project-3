@@ -16,31 +16,31 @@ object main{
   Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
   Logger.getLogger("org.spark-project").setLevel(Level.WARN)
 
-  def LubyMIS(g_in: Graph[Int, Int]): Graph[Int, Int] = {
-    var g = g_in
-    var g_copy = g
-    var remaining_vertices = g.numVertices
-    var count = 0
-    var rand = scala.util.Random
 
-    while (remaining_vertices > 0) {
-      g_copy = g.mapVertices((id, val) => if (val == 0) r.nextFloat else val )
-
-      // initial
-      val v1 = g_copy.aggregateMessages[(Int, Float)]( trip => { // Map Function
-           trip.sendToDst(if ((trip.srcAttr._2 + trip.srcAttr._1) > (trip.dstAttr._2 + trip.dstAttr._1)) (0, 0) else (1, 0));
-           trip.sendToSrc(if ((trip.srcAttr._2 + trip.srcAttr._1) > (trip.dstAttr._2 + trip.dstAttr._1)) (1, 0) else (0, 0))
-         },
-         (a,b) => ((math.min(a._1, b._1)), 0F)
-     )
-     // new
-     var g2 = Graph(v1, g_copy.edges)
-
-
-
-      count += 1
-
-  }
+  // def LubyMIS(g_in: Graph[Int, Int]): Graph[Int, Int] = {
+  //   var g = g_in
+  //   var g_copy = g
+  //   var remaining_vertices = g.numVertices
+  //   var count = 0
+  //   var rand = scala.util.Random
+  //
+  //   while (remaining_vertices > 0) {
+  //     g_copy = g.mapVertices((id, inf) => if (inf == 0) r.nextFloat else inf )
+  //
+  //     // initial
+  //     inf v1 = g_copy.aggregateMessages[(Int, Float)]( trip => { // Map Function
+  //          trip.sendToDst(if ((trip.srcAttr._2 + trip.srcAttr._1) > (trip.dstAttr._2 + trip.dstAttr._1)) (0, 0) else (1, 0));
+  //        },
+  //        (a,b) => ((math.min(a._1, b._1)), 0F)
+  //    )
+  //    // new
+  //    var g2 = Graph(v1, g_copy.edges)
+  //
+  //
+  //
+  //     count += 1
+  //
+  // }
 
 
   def verifyMIS(g_in: Graph[Int, Int]): Boolean = {
