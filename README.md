@@ -34,24 +34,18 @@ Apply `verifyMIS` locally with the parameter combinations listed in the table be
 | twitter_10000_edges.csv | twitter_10000_MIS_test_1.csv | Yes        |
 | twitter_10000_edges.csv | twitter_10000_MIS_test_2.csv | Yes        |
 
-2. **(3 points)** Implement the `LubyMIS` function. The function accepts a Graph[Int, Int] object as its input. You can ignore the two integers associated with the vertex RDD and the edge RDD as they are dummy fields. `LubyMIS` should return a Graph[Int, Int] object such that the integer in a vertex's data field denotes whether or not the vertex is in the MIS, with 1 signifying membership and -1 signifying non-membership. The output will be written as a CSV file to the output path you provide. To execute the function, run the following:
-```
-// Linux
-spark-submit --class project_3.main --master local[*] target/scala-2.12/project_3_2.12-1.0.jar compute [path_to_input_graph] [path_for_output_graph]
+2.
 
-// Unix
-spark-submit --class "project_3.main" --master "local[*]" target/scala-2.12/project_3_2.12-1.0.jar compute [path_to_input_graph] [path_for_output_graph]
-```
-Apply `LubyMIS` locally on the graph files listed below and report the number of iterations and running time that the MIS algorithm consumes for **each file**. You may need to include additional print statements in `LubyMIS` in order to acquire this information. Finally, verify your outputs with `verifyMIS`.
+Could not figure out LubyMIS function. Started it however.
 
 
 |        Graph file       |        # Iterations          | Running Time |
 | ----------------------- | ---------------------------- | ------------ |
-| small_edges.csv         |                              | Yes          |
-| line_100_edges.csv      |                              | No           |
-| twitter_100_edges.csv   |                              | Yes          |
-| twitter_1000_edges.csv  |                              | Yes          |
-| twitter_10000_edges.csv |                              | Yes          |
+| small_edges.csv         |                              |              |
+| line_100_edges.csv      |                              |              |
+| twitter_100_edges.csv   |                              |              |
+| twitter_1000_edges.csv  |                              |              |
+| twitter_10000_edges.csv |                              |              |
 
 3. **(3 points)**  
 a. Run `LubyMIS` on `twitter_original_edges.csv` in GCP with 3x4 cores. Report the number of iterations, running time, and remaining active vertices (i.e. vertices whose status has yet to be determined) at the end of **each iteration**. You may need to include additional print statements in `LubyMIS` in order to acquire this information. Finally, verify your outputs with `verifyMIS`.  
@@ -66,8 +60,8 @@ Delete your project's current **README.md** file (the one you're reading right n
 3. Submit a link to your repo in the Canvas assignment.
 
 ## Late submission penalties
-Beginning with the minute after the deadline, your submission will be docked a full letter grade (10%) for every 
+Beginning with the minute after the deadline, your submission will be docked a full letter grade (10%) for every
 day that it is late. For example, if the assignment is due at 11:59 PM EST on Friday and you submit at 3:00 AM EST on Sunday,
-then you will be docked 20% and the maximum grade you could receive on that assignment is an 80%. 
+then you will be docked 20% and the maximum grade you could receive on that assignment is an 80%.
 Late penalties are calculated from the last commit in the Git log.
 **If you make a commit more than 48 hours after the deadline, you will receive a 0.**

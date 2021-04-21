@@ -17,15 +17,53 @@ object main{
   Logger.getLogger("org.spark-project").setLevel(Level.WARN)
 
   def LubyMIS(g_in: Graph[Int, Int]): Graph[Int, Int] = {
-    while (remaining_vertices >= 1) {
-        // To Implement
-    }
+    var g = g_in
+    var g_copy = g
+    var remaining_vertices = g.numVertices
+    var count = 0
+    var rand = scala.util.Random
+
+    while (remaining_vertices > 0) {
+      g_copy = g.mapVertices((id, val) => if (val == 0) r.nextFloat else val )
+
+      // initial
+      val v1 = g_copy.aggregateMessages[(Int, Float)]( trip => { // Map Function
+           trip.sendToDst(if ((trip.srcAttr._2 + trip.srcAttr._1) > (trip.dstAttr._2 + trip.dstAttr._1)) (0, 0) else (1, 0));
+           trip.sendToSrc(if ((trip.srcAttr._2 + trip.srcAttr._1) > (trip.dstAttr._2 + trip.dstAttr._1)) (1, 0) else (0, 0))
+         },
+         (a,b) => ((math.min(a._1, b._1)), 0F)
+     )
+     // new
+     var g2 = Graph(v1, g_copy.edges)
+
+
+
+      count += 1
+
   }
 
 
   def verifyMIS(g_in: Graph[Int, Int]): Boolean = {
-    // To Implement
+    val g = g_in
+    // check if bidirected for every edge
+    val reverse = Graph(g.vertices, g.edges.reverse)
+    // generate graph
+    val bg = Graph(g.vertices.union(reverse.vertices), g.edges.union(reverse.edges))
+    // split source to neighbor nodes
+    val retMssg = bg.aggregateMessages[(Int, Int)](trip=>{
+    // maximality + independence
+    if(trip.srcAttr == 1 && trip.dstAttr == 1) trip.sendToDst((1,1))
+    else if(trip.srcAttr == 1 && trip.dstAttr == -1) trip.sendToDst((1,-1))
+    else if(trip.srcAttr == -1 && trip.dstAttr == 1)  trip.sendToDst((-1,1))
+    else trip.sendToDst((-1,-1))},
+      (v1,v2) => (math.max(v1._1,v2._1), math.max(v1._2,v2._2))
+    )
+    // filter out entries != 0
+    return retMssg.map(v => v._2._1+v._2._2).filter(s=>math.abs(s)>0).count()==0
+
+
   }
+
 
 
   def main(args: Array[String]) {
